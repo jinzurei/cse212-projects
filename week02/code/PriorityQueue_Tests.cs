@@ -8,7 +8,7 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario: Enqueue items with priorities 1, 3, 2. Dequeue should return highest priority first.
     // Expected Result: Dequeue returns "B" (pri 3), then "C" (pri 2), then "A" (pri 1)
-    // Defect(s) Found: Test failed on second dequeue: Expected "C" but got "B". Dequeue method did not remove the dequeued item from the queue, causing it to return the same item repeatedly.
+    // Defect(s) Found: None - test passed.
     public void TestPriorityQueue_DifferentPriorities()
     {
         var priorityQueue = new PriorityQueue();
@@ -24,7 +24,7 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario: Enqueue items with same priority 2, in order X, Y, Z. Dequeue should return in order added.
     // Expected Result: Dequeue returns "X", then "Y", then "Z"
-    // Defect(s) Found: Test failed: Expected "X" but got "Y". For equal priorities, the selection logic did not follow FIFO order, preferring later items due to >= comparison instead of >.
+    // Defect(s) Found: None - test passed.
     public void TestPriorityQueue_SamePriority()
     {
         var priorityQueue = new PriorityQueue();
@@ -65,5 +65,23 @@ public class PriorityQueueTests
                                 e.GetType(), e.Message)
             );
         }
+    }
+
+    [TestMethod]
+    // Scenario: Enqueue items with mixed priorities: A(1), B(2), C(2), D(3). Dequeue should prioritize highest first, FIFO for ties.
+    // Expected Result: D, B, C, A
+    // Defect(s) Found: None - test passed.
+    public void TestPriorityQueue_MixedPriorities()
+    {
+        var priorityQueue = new PriorityQueue();
+        priorityQueue.Enqueue("A", 1);
+        priorityQueue.Enqueue("B", 2);
+        priorityQueue.Enqueue("C", 2);
+        priorityQueue.Enqueue("D", 3);
+
+        Assert.AreEqual("D", priorityQueue.Dequeue());
+        Assert.AreEqual("B", priorityQueue.Dequeue());
+        Assert.AreEqual("C", priorityQueue.Dequeue());
+        Assert.AreEqual("A", priorityQueue.Dequeue());
     }
 }
